@@ -6,7 +6,7 @@ import { WORD, setWord } from './utils/word';
 import { User } from './models/User';
 import { IUser } from './interfaces/User';
 import { compareScores } from './utils/compare-scores';
-import { startLottery } from './utils/lottery';
+import { startLottery, initLottery } from './utils/lottery';
 
 export const bot: Telegraf<Context<Update>> = new Telegraf(process.env.BOT_TOKEN as string);
 
@@ -16,7 +16,7 @@ mongoose.connect('mongodb://mongodb:27017/pd', {
     useUnifiedTopology: true
 }).then(_ => {
     bot.launch();
-    startLottery();
+    initLottery();
 });
 
 bot.start(addParticipant);
@@ -57,6 +57,10 @@ bot.hears('leave', async (ctx) => {
     if (candidate) {
         await candidate.setValid(false);
     }
+});
+
+bot.hears('testLottery', async (ctx) => {
+    await startLottery(true);
 });
 
 bot.on("photo", async (ctx) => {
