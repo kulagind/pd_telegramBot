@@ -40,7 +40,7 @@ bot.hears('list', async (ctx) => {
     ctx.reply(list);
 });
 
-bot.hears(/^word [А-Яа-я]{0,99}$/g, (ctx) => {
+bot.hears(/^word [А-Яа-я\s0-9]{0,99}$/g, (ctx) => {
     setWord(ctx.update.message.text.substr(5));
     ctx.reply('Новое слово: ' + WORD);
 });
