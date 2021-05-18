@@ -69,6 +69,6 @@ bot.on("photo", async (ctx) => {
     });
 
     if (candidate) {
-        await candidate.setPhoto(ctx.message?.photo[0].file_id || '');
+        await candidate.setPhoto(ctx.message?.photo[0]?.file_id || '');
     }
 });

@@ -15,10 +15,7 @@ const user: Schema<IUser> = new Schema<IUser>({
     type: Boolean,
     required: true,
   },
-  photoId: {
-    type: String,
-    required: true,
-  },
+  photoId: String,
   chatId: {
     type: Number,
     required: true,

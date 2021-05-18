@@ -3,6 +3,8 @@ import { IUser } from "../interfaces/User";
 import { User } from "../models/User";
 import { WORD } from "../utils/word";
 
+export let WINNER: IUser | null = null;
+
 export function initLottery() {
     setInterval(async () => {
         const date = new Date();
@@ -10,7 +12,7 @@ export function initLottery() {
             const winner = await startLottery();
             await winner.pick();
         }
-    }, 1801000);
+    }, 3600000);
 }
 
 export async function startLottery(isTest: boolean = false): Promise<IUser> {
@@ -24,7 +26,9 @@ export async function startLottery(isTest: boolean = false): Promise<IUser> {
             bot.telegram.sendMessage(user.chatId, `Тестовый прогон лотереи, не обращайте внимания.`);
         }
         bot.telegram.sendMessage(user.chatId, `${WORD} дня сегодня - ${winner.name}! Поздравляем!`);
-        bot.telegram.sendPhoto(user.chatId, winner.photoId);
+        if (winner.photoId) {
+            bot.telegram.sendPhoto(user.chatId, winner.photoId);
+        }
     });
 
     return winner;
@@ -32,5 +36,6 @@ export async function startLottery(isTest: boolean = false): Promise<IUser> {
 
 function chooseWinner(users: IUser[]): IUser {
     const index = Math.floor(Math.random() * users.length);
+    WINNER = users[index];
     return users[index];
 }
